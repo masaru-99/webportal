@@ -23,7 +23,7 @@ public class ZipCodeController {
 	@PostMapping("/zip")
 	public String getZipCode(@RequestParam("zipcode") String zipcode,
 			Principal principal, Model model) {
-		log.info("[" + principal.getName() + "]住所検索：---");
+		log.info("[" + principal.getName() + "]住所検索:" + zipcode);
 		return "zipcode/zipcode";
 	}
 }
