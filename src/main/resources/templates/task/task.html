@@ -34,29 +34,7 @@
 	href="../static/css/ress.css">
 <link rel="stylesheet" th:href="@{/css/home.css}"
 	href="../static/css/home.css">
-	
-	<script type="text/javascript">
-	function check(){
-		var flag = 1;
-		var regex = new RegExp(/^\d{7}$/);
-		if(regex.test(document.form.zipcode.value)){
-			flag = 2;
-		}
-		if(document.form.zipcode.value == ""){
-			flag = 0;
-		}
-		
-		if(flag == 0){
-			window.alert('郵便番号を入力してください。');
-			return false;
-		}else if(flag == 1){
-			window.alert('正しい郵便番号ではありません。\n郵便番号はハイフンなし半角7桁で入力してください。');
-			return false;
-		}else{
-			return true;
-		}
-	}
-	</script>
+
 </head>
 
 <body th:classappend="${session.isDarkmode} ? 'mode-dark'">
@@ -88,41 +66,34 @@
 
 	<!-- コンテンツ -->
 	<div class="container">
-		<div class="row">
-
-			<div class="col-sm-6">
-				<div class="content-box">
-					<h2><span style="font-family:メイリオ">住所検索 - 郵便番号</span></h2>
-					<form method="post" th:action="@{/zip}" name="form" onSubmit="return check()">
-						<div class="input-group">
-							<input type="number" class="form-control" name="zipcode"
-								placeholder="郵便番号 : XXXXXXX"> <span
-								class="input-group-btn">
-								<button type="submit" class="btn btn-primary">検索</button>
-							</span>
-						</div>
-					</form>
-				</div>
+		<div class="content-box">
+			<h2>タスク管理</h2>
+			<hr>
+			<form method="post" th:action="@{/task/insert}">
+			<div class= "input-group">
+			<input type="text" class="form-control" name="comment" placeholder="タスク内容">
+			<input type="date" class="form-control" name="limitday">
+			<span class="input-group-btn">
+			<button type="submit" class="btn btn-warning">追加</button>
+			</span>
 			</div>
+			</form>
+			<hr>
 			
-			<div class="col-sm-6">
-				<div class="content-box">
-					<h2><span style="font-family:メイリオ">札幌の天気予報</span></h2>
-					<form method="post" th:action="@{/weather}">
-					<button type='submit' class="btn btn-primary" name='cityCode' value='016010'>もっと詳しく</button>
-					</form>
-				</div>
-			</div>
+			<ul th:each="task : ${taskEntity.tasklist}">
+			<li>
+			<a th:href="@{/task}">
+			<span th:text="${task.comment}"></span>
+			</a>
+			<span th:text="${task.limitday}"></span>
 			
-			<div class="col-sm-6">
-				<div class="content-box">
-					<h2><span style="font-family:メイリオ">直近のタスク</span></h2>
-					<form method="post" th:action="@{/task}">
-					<button type='submit' class="btn btn-primary">タスク管理へ</button>
-					</form>
-				</div>
-			</div>
-
+			</li>
+			</ul>
+			
+			<hr>
+			<form method="post" th:action="@{/task/csv}">
+			<button type="submit" class="btn btn-info">csv出力</button>
+			</form>
 		</div>
 	</div>
 
