@@ -27,11 +27,13 @@ public class ZipCodeController {
 	public String getZipCode(@RequestParam("zipcode") String zipcode,
 			Principal principal, Model model) {
 		
+		
 		ZipCodeEntity zipCodeEntity = zipCodeService.getZip(zipcode);
 		model.addAttribute("zipCodeEntity", zipCodeEntity);
 		
 		log.info("[" + principal.getName() + "]住所検索:" + zipcode);
 		
 		return "zipcode/zipcode";
+		
 	}
 }
