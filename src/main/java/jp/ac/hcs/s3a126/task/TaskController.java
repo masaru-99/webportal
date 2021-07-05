@@ -85,10 +85,15 @@ public class TaskController {
 	public String deleteTask(@PathVariable("id") int id, 
 			Principal principal, Model model) throws ParseException {
 		
-		taskService.deleteOne(id);
+		boolean isSuccess = taskService.deleteOne(id);
 		
-		log.info("[" + principal.getName() + "]タスク削除:" + id);
+		if(isSuccess) {
+			model.addAttribute("message", "正常に削除されました");
+		}else {
+			model.addAttribute("errorMessage", "削除できませんでした。再度操作をやり直してください");
+		}
 		
+		log.info("[" + principal.getName() + "]タスク削除:[" + id + "]");
 		
 		return getTask(principal, model);
 		

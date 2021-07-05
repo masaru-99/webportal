@@ -67,12 +67,15 @@ public class TaskService {
 	 * @return rowNumber
 	 * @throws ParseException 
 	 */
-	public int deleteOne(int id) throws ParseException {
-		int rowNumber = 0;
-		
-		rowNumber = taskRepository.deleteOne(id);
-		
-		return rowNumber;
+	public boolean deleteOne(int id) throws ParseException {
+		int count;
+		try {
+			count = taskRepository.deleteOne(id);
+		}catch (DataAccessException e) {
+			e.printStackTrace();
+			count = 0;
+		}
+		return count > 0;
 	}
 	
 	/**
