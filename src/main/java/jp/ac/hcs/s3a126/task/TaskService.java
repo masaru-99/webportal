@@ -1,5 +1,10 @@
 package jp.ac.hcs.s3a126.task;
 
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -47,12 +52,34 @@ public class TaskService {
 			TaskData data = new TaskData();
 			data.setUser_id(user_id);
 			data.setComment(comment);
-			data.setLimitday(new SimpleDateFormat("yyyy-dd-MM").parse(limitday));
+			data.setLimitday(new SimpleDateFormat("yyyy-MM-dd").parse(limitday));
 			rowNumber = taskRepository.insertOne(data);
 			
 		}catch (DataAccessException e) {
 			e.printStackTrace();
 		}
 		return rowNumber;
+	}
+	
+	/**
+	 * タスク情報をCSVファイルとしてサーバに保存する.
+	 * @param user_id ユーザID
+	 * @throws DataAccessException
+	 */
+	public void taskListCsvOut(String user_id) throws DataAccessException {
+		taskRepository.tasklistCsvOut(user_id);
+	}
+
+	/**
+	 * サーバーに保存されているファイルを取得して、byte配列に変換する.
+	 * @param fileName ファイル名
+	 * @return ファイルのbyte配列
+	 * @throws IOException ファイル取得エラー
+	 */
+	public byte[] getFile(String fileName) throws IOException {
+		FileSystem fs = FileSystems.getDefault();
+		Path p = fs.getPath(fileName);
+		byte[] bytes = Files.readAllBytes(p);
+		return bytes;
 	}
 }
