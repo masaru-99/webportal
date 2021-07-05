@@ -20,7 +20,7 @@ public class TaskRepository {
 	private static final String SQL_SELECT_ALL = "SELECT * FROM task WHERE user_id = ? order by limitday";	
 	
 	/**SQL１件追加*/
-	private static final String SQL_INSERT_ONE = "INSERT INTO task(id, user_id, comment, limitday) VALUES((SELECT MAX(id) + 1 FROM task), ? . ?)";
+	private static final String SQL_INSERT_ONE = "INSERT INTO task(id, user_id, comment, limitday) VALUES((SELECT MAX(id) + 1 FROM task), ?, ?, ?)";
 	
 	/**SQL１件削除*/
 	private static final String SQL_DELETE_ONE = "DELETE FROM task WHERE id = ?";

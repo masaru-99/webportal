@@ -22,7 +22,8 @@
 	href="../static/img/favicon.ico">
 <link rel="shortcut icon" th:href="@{/img/favicon.ico}">
 <link rel="apple-touch-icon" th:href="@{/img/favicon.ico}">
-<link rel="apple-touch-icon" th:href="@{/img/favicon.ico}" sizes="192x192">
+<link rel="apple-touch-icon" th:href="@{/img/favicon.ico}"
+	sizes="192x192">
 <link rel="apple-touch-icon" th:href="@{/img/favicon.ico}" sizes="58x58">
 
 <!-- スタイル設定 -->
@@ -68,31 +69,38 @@
 	<div class="container">
 		<div class="content-box">
 			<h2>タスク管理</h2>
+
 			<hr>
+
 			<form method="post" th:action="@{/task/insert}">
-			<div class= "input-group">
-			<input type="text" class="form-control" name="comment" placeholder="タスク内容">
-			<input type="date" class="form-control" name="limitday">
-			<span class="input-group-btn">
-			<button type="submit" class="btn btn-warning">追加</button>
-			</span>
-			</div>
+				<div class="input-group">
+					<input type="text" class="form-control" name="comment"
+						placeholder="タスク内容"> <input type="date"
+						class="form-control" name="limitday"> <span
+						class="input-group-btn">
+						<button type="submit" class="btn btn-warning">追加</button>
+					</span>
+				</div>
 			</form>
+
 			<hr>
-			
-			<ul th:each="task : ${taskEntity.tasklist}">
-			<li>
-			<a th:href="@{/task}">
-			<span th:text="${task.comment}"></span>
-			</a>
-			<span th:text="${task.limitday}"></span>
-			
-			</li>
-			</ul>
-			
+
+			<table class="table table-striped">
+				<tr>
+					<th>タスク内容</th>
+					<th>タスク消化期限</th>
+				</tr>
+				<tr th:each="task : ${taskEntity.tasklist}">
+					<th><a th:href="@{/task}"> <span th:text="${task.comment}"></span>
+					</a></th>
+					<th th:text="${task.limitday}"></th>
+
+				</tr>
+			</table>
+
 			<hr>
 			<form method="post" th:action="@{/task/csv}">
-			<button type="submit" class="btn btn-info">csv出力</button>
+				<button type="submit" class="btn btn-info">csv出力</button>
 			</form>
 		</div>
 	</div>
