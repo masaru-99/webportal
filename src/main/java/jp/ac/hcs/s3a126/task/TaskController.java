@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,7 +25,7 @@ public class TaskController {
 	private TaskService taskService;
 	
 	/**
-	 * タスク情報の表示を行う
+	 * タスク情報の一覧の表示を行う
 	 */
 	@PostMapping("/task")
 	public String getTask(Principal principal, Model model) {
@@ -41,7 +43,11 @@ public class TaskController {
 	}
 	
 	/**
-	 * タスク情報の追加を行う
+	 * タスク情報を追加する
+	 * @param comment コメント
+	 * @param limitday 期限日
+	 * @param principal ログイン情報
+	 * @param model
 	 * @throws ParseException 
 	 */
 	@PostMapping("/task/insert")
@@ -63,12 +69,31 @@ public class TaskController {
 		log.info("[" + principal.getName() + "]タスク追加:" + comment + " + " + limitday);
 		
 		
-		TaskEntity taskEntity = taskService.selectAll(principal.getName());
-		model.addAttribute("taskEntity", taskEntity);
-		
-		return "task/task";
+		return getTask(principal, model);
 		
 	}
+	
+	/**
+	 * 指定されたIDのタスクを削除する
+	 * @param id タスクID
+	 * @param principal ログイン情報
+	 * @param model
+	 * @return
+	 * @throws ParseException 
+	 */
+	@GetMapping("/task/delete/{id}")
+	public String deleteTask(@PathVariable("id") int id, 
+			Principal principal, Model model) throws ParseException {
+		
+		taskService.deleteOne(id);
+		
+		log.info("[" + principal.getName() + "]タスク削除:" + id);
+		
+		
+		return getTask(principal, model);
+		
+	}
+	
 	
 	/**
 	 * 自分の全てのタスク情報をCSVファイルとしてダウンロードさせる.

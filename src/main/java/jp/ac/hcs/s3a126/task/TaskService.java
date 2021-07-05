@@ -62,6 +62,20 @@ public class TaskService {
 	}
 	
 	/**
+	 * タスク情報を削除する
+	 * @param data 削除するユーザ情報
+	 * @return rowNumber
+	 * @throws ParseException 
+	 */
+	public int deleteOne(int id) throws ParseException {
+		int rowNumber = 0;
+		
+		rowNumber = taskRepository.deleteOne(id);
+		
+		return rowNumber;
+	}
+	
+	/**
 	 * タスク情報をCSVファイルとしてサーバに保存する.
 	 * @param user_id ユーザID
 	 * @throws DataAccessException
