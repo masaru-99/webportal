@@ -88,12 +88,13 @@ public class TaskController {
 		boolean isSuccess = taskService.deleteOne(id);
 		
 		if(isSuccess) {
-			model.addAttribute("message", "正常に削除されました");
+			model.addAttribute("message", "正常に削除されました。");
+			log.info("[" + principal.getName() + "]タスク削除:[" + id + "]");
 		}else {
 			model.addAttribute("errorMessage", "削除できませんでした。再度操作をやり直してください");
+			log.info("[" + principal.getName() + "]タスク削除エラー:[" + id + "]");
 		}
 		
-		log.info("[" + principal.getName() + "]タスク削除:[" + id + "]");
 		
 		return getTask(principal, model);
 		

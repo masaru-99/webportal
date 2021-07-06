@@ -72,7 +72,10 @@
 			<h2>タスク管理</h2>
 
 			<hr>
-
+			
+			<p th:text="${message}" style="background-color:#99FFCC;"></p>
+			<p th:text="${errorMessage}" style="background-color:#ffcc99;"></p>
+			
 			<form method="post" th:action="@{/task/insert}">
 				<div class="input-group">
 					<input type="text" class="form-control" name="comment"
