@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
 <meta charset="UTF-8">
-<title>WebPortal Main</title>
+<title>WebPortal Login</title>
 
 <!-- モバイル設定 -->
 <meta id="viewport" name="viewport"
@@ -38,50 +37,37 @@
 
 </head>
 
-<body th:classappend="${session.isDarkmode} ? 'mode-dark'">
-
-	<!-- 共通ヘッダ -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<body>
+	<div class="container">
 		<h1>
 			<a class="navbar-brand title-font" th:href="@{/}">WebPortal.com</a>
 		</h1>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarToggler" aria-controls="navbarToggler"
-			aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarToggler">
-			<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-				<li class="nav-item active"><a class="nav-link"
-					th:href="@{/change}"> <img class="config-img"
-						th:src="@{/img/config.png}" src="../static/img/config.png">
-				</a></li>
-				<li>
-					<form class="my-2 my-lg-0" method="post" th:action="@{/logout}">
-						<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Logout</button>
-					</form>
-				</li>
-			</ul>
-		</div>
-	</nav>
 
-	<!-- コンテンツ -->
-	<div class="container">
-		<div class="content-box">
-			<h2>北海道グルメ</h2>
-			<h2 th:text="${keyword}"></h2>
-			<!-- 基本１件だが、API構造に従い繰り返し構文とする -->
-			<ul th:each="shop : ${shopEntity.shoplist}">
-				<hr>
-				<li><img class="shopimage" th:src="${shop.logo_image}"></li>
-				<li><a th:href="${shop.url}"><span th:text="${shop.name}"></span></a></li>
-				<li><a th:href="@{https://www.google.com/maps/search/?api=1&query=__${shop.address}__}">
-				<span th:text="${shop.address}"></span></a></li>
-				<li><span th:text="${shop.access}"></span></li>
-			</ul>
+		<hr>
+
+		<h2>ログイン</h2>
+		<div class="input-form">
+			<!-- エラーメッセージ表示領域 -->
+			<p th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null"
+				th:text="${session['SPRING_SECURITY_LAST_EXCEPTION'].message}"
+				class="text-danger">ログインエラーメッセージ</p>
+
+			<form method="post" th:action="@{/login}">
+				<label for="user_id">ユーザID(メールアドレス)</label> <input type="text"
+					class="form-control input-box" name="user_id"
+					placeholder="xxxxxxx@xxx.xxx"> <label for="password">パスワード</label>
+				<input type="password" class="form-control input-box"
+					name="password" placeholder="xxxxxxxx">
+				<button type="submit" class="btn btn-primary">ログイン</button>
+			</form>
 		</div>
+
+		<hr>
+
+		<a th:href="@{'/signup'}">新規ユーザ登録はこちら</a>
+
 	</div>
-
+	
 	<!-- 共通スクリプト -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

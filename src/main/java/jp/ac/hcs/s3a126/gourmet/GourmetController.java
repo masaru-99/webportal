@@ -18,14 +18,17 @@ public class GourmetController {
 	
 	/**
 	 * キーワードからグルメに関する店舗情報を検索する
+	 * 地域は北海道に限定する
+	 * @param keyword 検索するキーワード
+	 * @param principal ログイン情報
+	 * @param model
 	 */
 	@PostMapping("/gourmet")
 	public String search(@RequestParam(name = "shopname", required = false) String keyword, Principal principal, Model model) {
 		
 		ShopEntity shopEntity = gourmetService.searchGourmet(keyword);
 		model.addAttribute("shopEntity", shopEntity);
-		model.addAttribute("keyword", "[" + keyword + "]の検索結果");
-		
+		model.addAttribute("keyword", "「" + keyword + "」の検索結果");
 		log.info("[" + principal.getName() + "]グルメ検索:" + keyword);
 		
 		return "gourmet/gourmet";

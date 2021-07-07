@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 北海道内のグルメ検索を行う
+ * 地域は北海道のみに限定する
  */
 
 @Transactional
@@ -48,7 +49,7 @@ public class GourmetService {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode node = mapper.readTree(json);
 			
-			//shoplistパラメータの抽出（配列分取得する）
+			//resultパラメータの抽出（配列分取得する）
 			for(JsonNode result : node.get("results").get("shop")) {
 				//データクラスの生成（result1件分）
 				ShopData shopData = new ShopData();
