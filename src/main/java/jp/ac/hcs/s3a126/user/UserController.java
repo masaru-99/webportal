@@ -9,7 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +24,7 @@ public class UserController {
 	/**
 	 * ユーザ一覧の表示を行う
 	 */
+	
 	@GetMapping("/user")
 	public String getUserList(Principal principal, Model model) {
 		
@@ -70,5 +73,50 @@ public class UserController {
 		boolean result = userService.insertOne(userData);
 		
 		return getUserList(principal, model);
+	}
+	
+	/**
+	 * ユーザ詳細情報画面を表示する
+	 * @param user_id 検索するユーザID
+	 * @param principal ログイン情報
+	 * @param model
+	 * @return ユーザ詳細情報画面
+	 */
+	@GetMapping("/user/detail/{id}")
+	public String getUserDetail(@PathVariable("id") String user_id,
+			Principal principal,
+			Model model) {
+		
+		if(user_id == null) {
+			return "user/user";
+		}
+		
+		UserData data = userService.selectUserOne(user_id);
+		
+		log.info("[" + principal.getName() + "]ユーザ詳細");
+		
+		model.addAttribute("userData", data);
+		return "user/detail";
+		
+	}
+	
+	/**
+	 * ユーザ情報を一件削除する
+	 * @param user_id 削除するユーザID
+	 * @param principal ログイン情報
+	 * @param model
+	 * @return getUserList 
+	 */
+	@PostMapping("/user/delete")
+	public String userDelete(@RequestParam(name = "user_id", required = false) String user_id,
+			Principal principal,
+			Model model) {
+		
+		userService.deleteUserOne(user_id);
+		
+		log.info("[" + principal.getName() + "]ユーザ削除:[" + user_id + "]");
+		
+		return getUserList(principal, model);
+		
 	}
 };

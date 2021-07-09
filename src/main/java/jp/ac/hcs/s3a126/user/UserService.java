@@ -54,18 +54,47 @@ public class UserService {
 	 * @return UserData
 	 */
 	UserData refillToData(UserForm form) {
+        UserData data = new UserData();
+        data.setUser_id(form.getUser_id());
+        data.setPassword(form.getPassword());
+        data.setUser_name(form.getUser_name());
+        data.setDarkmode(form.isDarkmode());
+        data.setRole(form.getRole());
+        
+        //初期値は有効とする
+        data.setEnabled(true);
+        return data;
+    }
+	
+	/**
+	 * ユーザ詳細情報を一件取得する
+	 * @param user_id 取得するユーザのユーザID
+	 * @return data
+	 */
+	public UserData selectUserOne(String user_id) {
 		UserData data = new UserData();
-		
-		data.setUser_id(form.getUser_id());
-		data.setPassword(form.getPassword());
-		data.setUser_name(form.getUser_name());
-		data.setDarkmode(form.isDarkmode());
-		data.setRole(form.getRole());	
-		
-		//初期値は有効とする
-		data.setEnabled(true);
-		
+		try {
+			data = userRepository.selectOne(user_id);
+		}catch (DataAccessException e) {
+			e.printStackTrace();
+			data = null;
+		}
 		return data;
 	}
 	
+	/**
+	 * ユーザ詳細情報を一件削除する
+	 * @param user_id 削除するユーザID
+	 * @return data
+	 */
+	public boolean deleteUserOne(String user_id) {
+		int rowNumber;
+		try {
+			rowNumber = userRepository.deleteOne(user_id);
+		}catch (DataAccessException e) {
+			e.printStackTrace();
+			rowNumber = 0;
+		}
+		return rowNumber > 0;
+	}
 }

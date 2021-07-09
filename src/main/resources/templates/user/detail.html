@@ -35,8 +35,7 @@
 	href="../static/css/ress.css">
 <link rel="stylesheet" th:href="@{/css/home.css}"
 	href="../static/css/home.css">
-	
-			
+<script th:src="@{/js/task.js}"></script>
 </head>
 
 <body th:classappend="${session.isDarkmode} ? 'mode-dark'">
@@ -69,43 +68,55 @@
 	<!-- コンテンツ -->
 	<div class="container">
 		<div class="content-box">
-			<h2 align="left">ユーザ一覧</h2>
-				
-			<table class="table table-striped table-light">
-			<thead class="thead-dark">
-				<tr>
-					<th>ユーザID（メールアドレス）</th>
-					<th>アカウント有効性</th>
-					<th>ユーザ名</th>
-					<th>ダークモード</th>
-					<th>権限</th>
-					<th></th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr th:each="user : ${userEntity.userlist}">
-					<td th:text="${user.user_id}"></td>
-					
-					<th:block th:if="${user.enabled}"><td>有効</td></th:block>
-					<th:block th:unless="${user.enabled}"><td>無効</td></th:block>
-					
-					<td th:text="${user.user_name}"></td>
-					
-					<th:block th:if="${user.darkmode}"><td>ダークモード</td></th:block>
-					<th:block th:unless="${user.darkmode}"><td>-</td></th:block>
-					
-					<td th:text="${user.role}"></td>
-					<td><a class="btn btn-success" th:href="@{/user/detail/__${user.user_id}__}">詳細</a></td>
-				</tr>
-				</tbody>
-			</table>
-			
-			<div align="left">
-			<form method="get" th:action="@{user/insert}">
-				<button type="submit" class="btn btn-danger">作成</button>
-			</form>
+			<h2>ユーザ詳細</h2>
+			<div class="input-form">
+				<form method="post" th:action="@{/user/update}"
+					th:object="${userData}">
+
+					<label for="user_id">ユーザID(メールアドレス)</label>
+					<p class="view-mail" th:text="*{user_id}"></p>
+					<input type="hidden" name="user_id" th:value="*{user_id}">
+
+					<hr>
+
+					<label for="password">パスワード</label>
+					<div class="form-group input-box"
+						th:classappend="${#fields.hasErrors('password')} ? 'has-error'">
+						<input type="password" class="form-control" name="password"
+							placeholder="xxxxxxxx" th:field="*{password}"> <span
+							class="text-danger" th:if="${#fields.hasErrors('password')}"
+							th:errors="*{password}">password error</span>
+						<p>※未入力の場合、前のパスワードを維持します</p>
+					</div>
+
+					<label for="user_name">ユーザ名</label>
+					<div class="form-group input-box"
+						th:classappend="${#fields.hasErrors('user_name')} ? 'has-error'">
+						<input type="text" class="form-control" name="user_name"
+							placeholder="情報 太郎" th:field="*{user_name}"> <span
+							class="text-danger" th:if="${#fields.hasErrors('user_name')}"
+							th:errors="*{user_name}">user_name error</span>
+					</div>
+
+					<label for="role">権限設定</label>
+					<div class="form-group input-box">
+						<div>
+							<input type="radio" name="role" th:field="*{role}" value="ROLE_ADMIN" id="role1">管理
+						</div>
+						<div>
+							<input type="radio" name="role" th:field="*{role}" value="ROLE_GENERAL" id="role2">一般
+						</div>
+						<span class="text-danger" th:if="${#fields.hasErrors('role')}"
+							th:errors="*{role}">role error</span>
+					</div>
+					<button class="btn btn-primary" type="submit" name="update">更新</button>
+				</form>
+					<hr>
+				<form method="post" th:action="@{/user/delete}" th:object="${userData}">
+					<input type="hidden" th:value="*{user_id}" name="user_id">
+					<button class="btn btn-danger" type="submit" name="delete">削除</button>
+				</form>
 			</div>
-			
 		</div>
 	</div>
 

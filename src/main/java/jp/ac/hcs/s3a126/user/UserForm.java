@@ -20,7 +20,7 @@ public class UserForm {
 	
 	/** パスワード */
 	@NotBlank(message = "{require_check}")
-	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "[pattern_check]")
+	@Pattern(regexp = "^[a-zA-Z0-9]+$", message = "{pattern_check}")
 	private String password;
 	
 	/** ユーザ名 */
@@ -28,7 +28,7 @@ public class UserForm {
 	private String user_name;
 	
 	/** ダークモードフラグ */
-//	@Pattern(regexp = "^(true|false)$", message = "[pattern_check]")
+//	@Pattern(regexp = "^(true|false)$", message = "{pattern_check}")
 	private boolean darkmode;
 	
 	/** 権限 */
