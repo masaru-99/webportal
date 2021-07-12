@@ -101,7 +101,7 @@ public class UserController {
 	}
 	
 	/**
-	 * ユーザ情報を一件削除する
+	 * ユーザ情報を１件削除する
 	 * @param user_id 削除するユーザID
 	 * @param principal ログイン情報
 	 * @param model

@@ -68,13 +68,16 @@
 	<div class="container">
 		<div class="content-box">
 			<h2>札幌の天気予報</h2>
-			<p>詳細</p>
+			<p>(詳細)</p>
 			<!-- 基本１件だが、API構造に従い繰り返し構文とする -->
 			<ul th:each="forecast : ${weatherEntity.forecasts}" th:object="${forecast}">
 				<li><h4><span th:text="*{dateLabel}"></span></h4></li>
 				<li><span th:text="*{telop}"></span></li>
 			</ul>
 			
+			<hr>
+			
+			<h3>説明文</h3>
 			<p th:text="${weatherEntity.description}"></p>
 		</div>
 	</div>
